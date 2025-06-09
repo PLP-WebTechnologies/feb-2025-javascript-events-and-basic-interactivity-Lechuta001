@@ -1,0 +1,125 @@
+js-event-assignment/
+├── index.html
+├── style.css
+└── script.js
+
+<!-- index.html -->
+<button id="colorBtn">Click me!</button>
+<div id="hoverBox">Hover over me!</div>
+<input type="text" id="keyInput" placeholder="Press any key here" />
+
+/* style.css */
+#hoverBox {
+  width: 200px; height: 100px; background: lightgray; text-align:center; line-height: 100px;
+  transition: background-color 0.3s;
+}
+#hoverBox.hovered {
+  background-color: lightblue;
+}
+
+// script.js
+// Button click: change text & color
+const btn = document.getElementById('colorBtn');
+btn.addEventListener('click', () => {
+  btn.textContent = "Clicked!";
+  btn.style.backgroundColor = '#4CAF50';
+});
+
+// Hover effect using JS
+const hoverBox = document.getElementById('hoverBox');
+hoverBox.addEventListener('mouseenter', () => hoverBox.classList.add('hovered'));
+hoverBox.addEventListener('mouseleave', () => hoverBox.classList.remove('hovered'));
+
+// Keypress detection
+const keyInput = document.getElementById('keyInput');
+keyInput.addEventListener('keypress', (e) => {
+  console.log(`Key pressed: ${e.key}`);
+});
+
+// Bonus: double-click secret action
+btn.addEventListener('dblclick', () => {
+  alert('Secret double-click action triggered!');
+});
+
+
+<!-- index.html -->
+<div id="gallery">
+  <img src="image1.jpg" alt="Image 1" class="active">
+  <img src="image2.jpg" alt="Image 2">
+  <img src="image3.jpg" alt="Image 3">
+  <button id="nextBtn">Next</button>
+</div>
+
+
+/* style.css */
+#gallery img {
+  display: none;
+  width: 300px;
+  height: 200px;
+}
+#gallery img.active {
+  display: block;
+}
+
+
+// script.js
+const images = document.querySelectorAll('#gallery img');
+const nextBtn = document.getElementById('nextBtn');
+let currentIndex = 0;
+
+nextBtn.addEventListener('click', () => {
+  images[currentIndex].classList.remove('active');
+  currentIndex = (currentIndex + 1) % images.length;
+  images[currentIndex].classList.add('active');
+});
+
+
+<!-- index.html -->
+<form id="signupForm" novalidate>
+  <label>Email: <input type="email" id="email" required></label><br>
+  <label>Password: <input type="password" id="password" required></label><br>
+  <button type="submit">Sign Up</button>
+  <div id="feedback"></div>
+</form>
+
+
+// script.js
+const form = document.getElementById('signupForm');
+const emailInput = document.getElementById('email');
+const passwordInput = document.getElementById('password');
+const feedback = document.getElementById('feedback');
+
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  let messages = [];
+  
+  // Email validation
+  const emailValue = emailInput.value.trim();
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(emailValue)) messages.push('Please enter a valid email.');
+
+  // Password validation
+  const passwordValue = passwordInput.value;
+  if (passwordValue.length < 8) messages.push('Password must be at least 8 characters.');
+
+  if (messages.length > 0) {
+    feedback.textContent = messages.join(' ');
+    feedback.style.color = 'red';
+  } else {
+    feedback.textContent = "Success! Form submitted.";
+    feedback.style.color = 'green';
+    form.reset();
+  }
+});
+
+// Real-time feedback on password length
+passwordInput.addEventListener('input', () => {
+  if (passwordInput.value.length < 8) {
+    feedback.textContent = 'Password too short!';
+    feedback.style.color = 'orange';
+  } else {
+    feedback.textContent = '';
+  }
+});
+
